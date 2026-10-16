@@ -1,0 +1,21 @@
+{
+  "target": 99,
+  "module": 1,
+  "strict": true,
+  "noImplicitAny": false,
+  "moduleResolution": 2,
+  "esModuleInterop": true,
+  "jsx": 4,
+  "skipLibCheck": true,
+  "forceConsistentCasingInFileNames": true,
+  "paths": {
+    "@/*": [
+      "./src/*"
+    ],
+    "~/*": [
+      "./*"
+    ]
+  },
+  "pathsBasePath": "<project>",
+  "configFilePath": "<project>/tsconfig.json"
+}

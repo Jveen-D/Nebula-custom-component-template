@@ -1,0 +1,9 @@
+node_modules
+.DS_Store
+dist
+dist-ssr
+*.local
+yarn-error.log
+
+# User authentication files must stay outside the template.
+.npmrc-*

@@ -1,0 +1,45 @@
+{
+  "name": "self-defined-component",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "dongting-cli serve",
+    "serve": "dongting-cli serve",
+    "local": "npm run start --local=true",
+    "build": "dongting-cli build",
+    "sync": "node scripts/sync-remotes.cjs",
+    "test:request": "node --test scripts/request-contract.test.cjs",
+    "test:config": "node --test scripts/config-contract.test.cjs",
+    "check": "biome check .",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:capabilities": "node --test scripts/capabilities.test.cjs"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
+    "ahooks": "^3.3.10",
+    "antd": "^5.11.0",
+    "antd-style": "^3.5.0",
+    "axios": "0.27.2",
+    "buffer": "^6.0.3",
+    "echarts": "^5.4.3",
+    "js-cookie": "^3.0.1",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "react-redux": "^8.0.2",
+    "react-router-dom": "^6.3.0",
+    "stream-browserify": "^3.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@types/lodash": "^4.14.191",
+    "@types/react": "^18.0.28",
+    "@duwenjie198312/dongting-cli": "0.0.32",
+    "@duwenjie198312/build-webpack-react": "0.0.24"
+  }
+}
