@@ -1,8 +1,8 @@
 # 自定义组件与大屏协同能力
 
-这是能力的唯一索引。AI 先读本页，按任务选择下面一个实现文件，再读对应函数 JSDoc；需要了解调用范例时再读 examples；参考代码不属于公共能力 API 或默认页面。无需先扫描整个组件或遗留工具目录。
+这是能力的唯一索引。AI 先读本页，按任务选择下面一个实现文件，再读对应函数 JSDoc；需要了解调用范例时再读 examples；参考代码不属于公共能力 API 或默认页面。无需先扫描整个组件目录。
 
-入口 [index.ts](./index.ts) 只导出函数和类型，没有初始化过程。本目录不在导入阶段主动发出宿主请求、修改场景/联动 DOM 或订阅宿主事件；参考 React 示例不由默认入口加载。宿主对象在实际调用时才读取；可注入请求、SDK、事件目标和文档用于验证。
+入口 [index.ts](./index.ts) 只导出函数和类型，没有初始化过程。本目录不在导入阶段主动发出宿主请求、修改场景/联动 DOM 或订阅宿主事件；参考 React 示例不由默认入口加载。宿主对象在实际调用时才读取；可注入请求、SDK、事件目标和 DOM 目标查找用于验证。
 
 ## 分类索引
 
@@ -19,7 +19,7 @@
 | engine.appearance / 构件外观 | 已提取 SDK 调用；目标格式和数值范围待确认 | [engine/attributes.ts](./engine/attributes.ts)、[SDK 子集](./engine/host.ts) | 改变三维场景 |
 | engine.reset-appearance / 恢复属性 | 恢复范围待宿主确认 | 同上 | 改变三维场景 |
 | events.selection / 选择事件 | 已实现显式订阅及清理，结果结构未知 | [events/selection.ts](./events/selection.ts) | 注册一个 document 监听，返回幂等清理函数 |
-| interaction.visibility / 跨组件显隐 | 仅原生 DOM 示例，不是平台组件协议 | [interaction/visibility.ts](./interaction/visibility.ts) | 修改两个已存在元素的行内 display |
+| interaction.visibility / 跨组件显隐 | 仅原生 DOM 示例，不是平台组件协议 | [interaction/visibility.ts](./interaction/visibility.ts) | 显式授权两个目标后隐藏／恢复原 display |
 
 待实现且没有假接口：数据源订阅/消费、customPropsResult 表达式解析或业务映射、向宿主回传自定义事件。不要从字段名推断已具备这些能力。
 
@@ -35,7 +35,7 @@ const stop = subscribeToSelection((selection) => consumeSelection(selection));
 // 在 React useEffect 的清理函数中返回 stop，或不再需要时调用 stop()。
 ```
 
-三维 target 不提供默认空 ID；原注释中的“所有构件”不能推导为空字符串的确定语义。dataSetId、elemIdList、颜色/材质值域、恢复范围都应先按实际 SDK 确认。DOM 示例要求两个元素已存在，visible=true 固定写 block，不承诺恢复元素原 display。
+三维 target 不提供默认空 ID；原注释中的“所有构件”不能推导为空字符串的确定语义。dataSetId、elemIdList、颜色/材质值域、恢复范围都应先按实际 SDK 确认。DOM 联动必须显式提供 canControl，按调用方确认的容器或目标集合授权；允许跨组件操作，不猜测宿主容器。两个目标全部存在且通过授权后才修改；false 隐藏，true 恢复隐藏前的行内 display（含优先级），未隐藏过则不修改。隐藏期间外部改写的 display 不会被恢复操作覆盖；目标移除前按需恢复，避免多个控制者同时管理同一目标。
 
 ## 调用参考
 
@@ -54,4 +54,4 @@ const stop = subscribeToSelection((selection) => consumeSelection(selection));
 
 ## 已知限制
 
-数据源消费和对外事件输出尚未实现；三维目标及视角接口协议须由宿主确认。完整 npm run typecheck 当前仍有 5 个诊断：interaction/visibility.ts:13、14 的 TS2531，GlobalConfig.ts:2、3 和 utils/token.ts:2 的 TS2307。构建可成功，不能据此声明类型检查通过。
+数据源消费和对外事件输出尚未实现；三维目标及视角接口协议须由宿主确认。平台代调的目标限制、认证转发与写入权限由宿主负责，不能仅凭模板声明为已验收。类型检查、构建和真实宿主验证应分别执行。

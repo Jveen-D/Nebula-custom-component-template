@@ -20,20 +20,22 @@ Compress-Archive -Path .\dist\* -DestinationPath ..\component.zip
 
 ZIP 根目录放 dist 内的产物，不包含外层 dist 目录。legacy-peer-deps 用于现有构建插件的 peer 约束；安装阶段禁用隐式生命周期，构建脚本显式执行。保留 package-lock.json，使用 npm ci 安装。
 
-组件需要宿主提供 window.core、React/Antd externals 和三维引擎；开发服务可访问不代表脱离宿主即可完整运行。
+组件需要宿主提供 window.core、React/Antd externals 和三维引擎；开发服务可访问不代表脱离宿主即可完整运行。开发服务仅监听 127.0.0.1；跨源加载前，将实际宿主完整来源（协议、域名、端口）写入环境变量 `NEBULA_DEV_ORIGINS`，多个来源用逗号分隔后重启服务。不接受通配符、路径或凭据；未配置时仅允许本地开发来源。
 
 ## 开发与 AI 阅读入口
 
 1. 先读 [能力索引](./src/capabilities/README.md)，再按分类读取函数的中文 JSDoc。
 2. 业务 UI 位于 [src/component/index.tsx](./src/component/index.tsx)；[src/index.tsx](./src/index.tsx) 保留宿主注册、定位和 props 透传。
 3. examples 仅供 AI 按需阅读调用参考，不接入主组件或公共能力 API，没有默认页面开关。业务按需组合真实能力；数据源消费和向宿主发送事件尚未实现。
+4. 默认开发大屏页面内的自定义组件，体量可小、功能可完整；仅在用户明确要求时制作完整页面，不默认加入整页导航或侧栏。
+5. 宿主可任意拖拽组件宽高：按组件父容器尺寸响应布局，不只依赖 viewport；样式限定在组件内。验收须覆盖小宽度、低高度、大宽度及连续缩放，检查换行、内部滚动、溢出和交互可达性。
 
 ```powershell
 npm run check
 npm run typecheck
 ```
 
-检查手动执行。当前完整类型检查仍有 5 个已知诊断，位置见能力索引；构建成功不代表类型检查全部通过。
+检查手动执行；类型检查、构建和真实宿主验收分别验证。
 
 ## 维护者双仓同步
 
@@ -44,4 +46,4 @@ npm run sync -- --check
 npm run sync
 ```
 
-默认只同步 main，版本标签须显式指定，例如 npm run sync -- --tag v1.2.3。分歧和标签冲突会停止，逐远端报告结果；修复故障后可重试。两端推送非原子，不自动合并、不强推或删除远端历史。凭据与 SSH 主机信任由维护者在仓库外正常配置；更多参数见 npm run sync -- --help。
+默认只同步 main，版本标签须显式指定，例如 npm run sync -- --tag v1.2.3。分歧和标签冲突会停止，逐远端报告结果；修复故障后可重试。两端推送非原子，不自动合并、不强推或删除远端历史。`--check` 不推送，但可能联网 fetch 并写入 Git 对象数据库。凭据与 SSH 主机信任由维护者在仓库外正常配置；更多参数见 npm run sync -- --help。
