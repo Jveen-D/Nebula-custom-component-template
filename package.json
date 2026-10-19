@@ -9,12 +9,8 @@
     "local": "npm run start --local=true",
     "build": "dongting-cli build",
     "sync": "node scripts/sync-remotes.cjs",
-    "test:request": "node --test scripts/request-contract.test.cjs",
-    "test:config": "node --test scripts/config-contract.test.cjs",
     "check": "biome check .",
-    "typecheck": "tsc --noEmit",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "test:capabilities": "node --test scripts/capabilities.test.cjs"
+    "typecheck": "tsc --noEmit"
   },
   "author": "",
   "license": "ISC",

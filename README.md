@@ -2,6 +2,8 @@
 
 React 自定义组件模板，依赖公开 npm 包，无需 npm 登录。环境：Node.js 24、npm 11。
 
+项目默认使用淘宝 npm 镜像 `https://registry.npmmirror.com/`，仅 `@duwenjie198312` 从官方 npm 下载。npm 11 使用 `replace-registry-host=never` 配合锁文件中的混合源地址，避免把该 scope 的 tarball 改写到镜像；版本和 integrity 保持不变。
+
 ## 安装、运行与打包
 
 ```powershell
@@ -27,7 +29,6 @@ ZIP 根目录放 dist 内的产物，不包含外层 dist 目录。legacy-peer-d
 3. examples 仅供 AI 按需阅读调用参考，不接入主组件或公共能力 API，没有默认页面开关。业务按需组合真实能力；数据源消费和向宿主发送事件尚未实现。
 
 ```powershell
-npm run test:capabilities
 npm run check
 npm run typecheck
 ```

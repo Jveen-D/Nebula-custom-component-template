@@ -120,9 +120,10 @@ function run({ cwd = path.resolve(__dirname, '..'), args = process.argv.slice(2)
         if (!setting) return false;
         const [, key, value] = setting;
         if (key === 'strict-ssl') return value === 'true';
-        return (key === 'registry' || /^@[A-Za-z0-9_.-]+:registry$/.test(key)) && ['https://registry.npmjs.org/', 'https://nexus.bjblackhole.cn/repository/npm-group/'].includes(value);
+        if (key === 'replace-registry-host') return value === 'never';
+        return (key === 'registry' || /^@[A-Za-z0-9_.-]+:registry$/.test(key)) && ['https://registry.npmjs.org/', 'https://registry.npmmirror.com/', 'https://nexus.bjblackhole.cn/repository/npm-group/'].includes(value);
       });
-      if (!safe) throw new Error('Potential private configuration in committed history: .npmrc may only contain the approved HTTPS registry/scope settings and strict-ssl=true. No authentication fields or other content are allowed.');
+      if (!safe) throw new Error('Potential private configuration in committed history: .npmrc may only contain the approved HTTPS registry/scope settings, replace-registry-host=never and strict-ssl=true. No authentication fields or other content are allowed.');
     }
 
     log(`Selected branch: ${options.branch} @ ${tip}`);

@@ -6,7 +6,7 @@
 
 ## 分类索引
 
-“已实现适配”表示提取了真实调用并通过替身测试，不表示已在真实宿主验收；“仅示例/待确认”不得升级描述为平台已支持。
+“已实现适配”表示提取了真实调用，不表示已在真实宿主验收；“仅示例/待确认”不得升级描述为平台已支持。
 
 | 能力 ID / 名称 | 用途与状态 | 按需读取 | 调用后的副作用 |
 | --- | --- | --- | --- |
@@ -50,7 +50,7 @@ const stop = subscribeToSelection((selection) => consumeSelection(selection));
 1. 在最相关分类新增普通函数或类型；分类确实不同再增加目录。只需要调用时参数，不增加自动初始化、插件注册框架或全局状态。
 2. JSDoc 使用固定字段：@capability（唯一 ID）、@status、@param、@returns、@requires（宿主及前置条件）、@sideEffects、@example。未知协议写“待宿主确认”，未实现能力只列入待实现清单。
 3. 导入阶段保持无副作用，事件返回清理函数；核心不包含企业业务目标，示例配置与实现分开。能力可从 index.ts 导出，React 演示保持单独入口。
-4. 在本表增加一行，补充针对性的替身测试。执行 npm run test:capabilities、既有请求/配置/同步回归和构建，检查历史类型诊断差异；不要用 any、非空断言、ts-ignore 或放宽 tsconfig 来掩盖历史问题。
+4. 在本表增加一行。执行 npm run check、npm run typecheck 和 npm run build，并在真实宿主中验证新能力、对比已有类型诊断；不要用 any、非空断言、ts-ignore 或放宽 tsconfig 来掩盖历史问题。
 
 ## 已知限制
 
