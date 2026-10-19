@@ -6,7 +6,7 @@ const path = require('node:path');
 
 const TARGETS = [
   { label: 'GitHub', option: 'github', remote: 'origin', url: 'https://github.com/Jveen-D/Nebula-custom-component-template.git' },
-  { label: 'Gitee', option: 'gitee', remote: 'gitee', url: 'git@gitee.com:obar/Nebula-custom-component-template.git' },
+  { label: 'Gitee', option: 'gitee', remote: 'gitee', url: 'https://gitee.com/obar/Nebula-custom-component-template.git' },
 ];
 const HELP = `Usage: npm run sync -- [--branch main] [--tag v1.2.3] [--check]
   --github NAME   GitHub remote name (default: origin)
