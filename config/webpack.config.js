@@ -1,8 +1,15 @@
-const webpack = require('webpack')
+const { createRequire } = require('node:module')
+const buildRequire = createRequire(require.resolve('@duwenjie198312/build-webpack-react/package.json'))
+const webpack = buildRequire('webpack')
 
 module.exports = {
   // config 是 webpack-chain 的对象，可以链式修改配置
   default: (config, options) => {
+    // The host executes the JS entry without its HTML; initial CSS must inject itself.
+    const cssRule = config.module.rule('css')
+    cssRule.uses.delete('mini-css-extract-plugin')
+    cssRule.use('style-loader').before('css-loader').loader(buildRequire.resolve('style-loader'))
+    cssRule.use('css-loader').loader(buildRequire.resolve('css-loader'))
     if (options.cliArgv.local) {
       config.plugin('define-constant').use(webpack.DefinePlugin, [{ __RUN_ON_LOCAL__: true }])
       return

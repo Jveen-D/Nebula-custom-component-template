@@ -47,3 +47,10 @@ npm run sync
 ```
 
 默认只同步 main，版本标签须显式指定，例如 npm run sync -- --tag v1.2.3。分歧和标签冲突会停止，逐远端报告结果；修复故障后可重试。两端推送非原子，不自动合并、不强推或删除远端历史。`--check` 不推送，但可能联网 fetch 并写入 Git 对象数据库。凭据与 SSH 主机信任由维护者在仓库外正常配置；更多参数见 npm run sync -- --help。
+
+
+## 生产组件样式契约
+
+宿主仅执行选中的 JS，不读取构建 HTML。普通 CSS 由构建器现有 style-loader 在运行时注入；保留 css-loader 选项与 CSS Modules，Less/Sass 原规则不变。不能仅凭 disableCssExtract: true 判断普通 CSS 已内联，因为 build-webpack-react 0.0.24 的基础规则仍会抽离普通 CSS。不要修改 node_modules。
+
+修改构建配置后运行 node --test tests/production-css.test.cjs，核对实际 webpack-chain 规则并编译普通 CSS / CSS Modules。正式命令仍为 npm run build；交付验收应从最终 ZIP 解包，只执行生产 JS，不打开 HTML、不预载 CSS，检查计算样式与同屏隔离。模板修复当前仅在本地，尚未提交或同步远端。
